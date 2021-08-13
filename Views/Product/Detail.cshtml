@@ -1,0 +1,67 @@
+﻿@model Ecommerce.Data.Entities.Product
+@{
+    ViewBag.Title = Model.Name + " Details";
+    var cartWasUpdated = false;
+    if (Session["cartWasUpdated"].ToString() != (""))
+    {
+        cartWasUpdated = true;
+        Session["cartWasUpdated"] = "";
+    }
+}
+<div class="container">
+    <h3 class="h3">Product Details</h3>
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="product-grid">
+                    <div class="product-image">
+                        <a href="@Model.ImagePath">
+                            <img src="@Model.ImagePath">
+                        </a>
+                        @if (Model.PercentOff != 0)
+                        {
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">@Model.PercentOff%</span>
+                        }
+                    </div>
+                    <ul class="rating">
+                        @for (var i = 1; i <= Model.StarRating; i++)
+                        {
+                            <li class="fa fa-star"></li>
+                        }
+                        @for (var i = Model.StarRating; i < 5; i++)
+                        {
+                            <li class="fa fa-star disable"></li>
+                        }
+                    </ul>
+                    <div class="product-content">
+                        <h3 class="title"><a>@Model.Name</a></h3>
+                        <div class="price">
+                            $@Model.CurrentPrice.ToString("0.00")
+                            @if (Model.FullPrice > 0)
+                            {
+                                <span>$@Model.FullPrice.ToString("0.00")</span>
+                            }
+                        </div>
+                        <a class="add-to-cart"
+                           href='@Url.Action("AddToSessionCart", "Cart", new { prodID = Model.ProductId }, null)'>+ Add To Cart</a>
+                    </div>
+                    <div class="product-description text-left">
+                        <h3>@Model.Name</h3>
+                        @Model.Description
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@if (cartWasUpdated)
+{
+    <script>
+        setTimeout(()=>
+        alert('Item added to cart!'), 100);
+    </script>
+}
+
+

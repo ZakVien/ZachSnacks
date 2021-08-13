@@ -1,0 +1,194 @@
+﻿@model Ecommerce.Models.ShippingAndBillingViewModel
+@{
+    ViewBag.Title = "Checkout - Billing Info";
+}
+
+<div class="container">
+    @using (Html.BeginForm("BillingInfo", "Checkout",
+        new { ReturnUrl = Request.QueryString["ReturnUrl"] },
+        FormMethod.Post,
+        new { @class = "form-signup", @onsubmit = "return validateForm()" }))
+    {
+        if (IsPost)
+        {
+            <div class="alert alert-danger">
+                <p><b>Please fill out all required fields </b></p>
+            </div>
+        }
+
+        <h2 class="form-signup-heading">Billing Information</h2>
+
+        <div class="checkbox">
+            <label>
+                <input id="billingEqualsShipping" type="checkbox" onclick="handleCheckbox()"> Billing information is the same as shipping information
+            </label>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingFirstName, "First Name", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingFirstName, new { @class = "form-control", placeholder = "First Name", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingFirstName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingLastName, "Last Name", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingLastName, new { @class = "form-control", placeholder = "Last Name", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingLastName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingAddress1, "Address", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingAddress1, new { @class = "form-control", placeholder = "Address", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingAddress1)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingAddress2, "Address 2", new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.BillingAddress2, new { @class = "form-control", placeholder = "Apartment,  studio, or floor", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.BillingAddress2)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingCity, "City", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingCity, new { @class = "form-control", placeholder = "City/Town", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingCity)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingState, "State", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingState, new { @class = "form-control", placeholder = "State", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingState)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingZIPCode, "ZIP", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingZIPCode, new { @class = "form-control", placeholder = "ZIP", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingZIPCode)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingCreditCard, "Credit Card Number", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingCreditCard, new { @class = "form-control", placeholder = "Credit Card Number", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingCreditCard)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingCVC, "CVC", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingCVC, new { @class = "form-control", type="password", placeholder = "CVC", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingCVC)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingExpMonth, "Expiration Month", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingExpMonth, new { @class = "form-control", placeholder = "mm", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingExpMonth)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BillingExpYear, "Expiration Year", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.BillingExpYear, new { @class = "form-control", placeholder = "yyyy", autofocus = "", onchange = "borderColor(this)"  })
+            @Html.ValidationMessageFor(m => m.BillingExpYear)
+        </div>
+        @Html.HiddenFor(m => m.CustomerId)
+        @Html.HiddenFor(m => m.UserId)
+        @Html.HiddenFor(m => m.CartId)
+        @Html.HiddenFor(m => m.CustomerEmail)
+        @Html.HiddenFor(m => m.ShippingFirstName)
+        @Html.HiddenFor(m => m.ShippingLastName)
+        @Html.HiddenFor(m => m.ShippingAddress1)
+        @Html.HiddenFor(m => m.ShippingAddress2)
+        @Html.HiddenFor(m => m.ShippingCity)
+        @Html.HiddenFor(m => m.ShippingState)
+        @Html.HiddenFor(m => m.ShippingZIPCode)
+        <div class="text-center">
+            <button class="btn btn-lg btn-primary" type="submit">Continue</button>
+            <br />
+            <br />
+            <button class="btn btn-lg btn-dark" type="button" onclick="location.href='@Url.Action("Index", "Cart")'">Cancel</button>
+        </div>
+    }
+</div>
+
+<script>
+    var firstNameInput = document.getElementById('BillingFirstName');
+    var lastNameInput = document.getElementById('BillingLastName');
+    var addr1Input = document.getElementById('BillingAddress1');
+    var addr2Input = document.getElementById('BillingAddress2');
+    var cityInput = document.getElementById('BillingCity');
+    var stateInput = document.getElementById('BillingState');
+    var zipInput = document.getElementById('BillingZIPCode');
+    var ccNumInput = document.getElementById('BillingCreditCard');
+    var cvcInput = document.getElementById('BillingCVC');
+    var expMonthInput = document.getElementById('BillingExpMonth');
+    var expYearInput = document.getElementById('BillingExpYear');
+
+    function handleCheckbox() {
+        var checkboxValue = false;
+        if (document.querySelector('#billingEqualsShipping').checked) checkboxValue = true;
+
+        if (checkboxValue) {
+            firstNameInput.value = '@Model.ShippingFirstName';
+            lastNameInput.value = '@Model.ShippingLastName';
+            addr1Input.value = '@Model.ShippingAddress1';
+            @if(Model.ShippingAddress2 != null && @Model.ShippingAddress2 != "") {
+                @:addr2Input.value = '@Model.ShippingAddress2';
+            }
+            cityInput.value = '@Model.ShippingCity';
+            stateInput.value = '@Model.ShippingState';
+            zipInput.value = '@Model.ShippingZIPCode';
+        } else {
+            firstNameInput.value = "";
+            lastNameInput.value = "";
+            addr1Input.value = "";
+            addr2Input.value = "";
+            cityInput.value = "";
+            stateInput.value = "";
+            zipInput.value = "";
+        }
+    }
+
+    function validateForm() {
+        var firstName = firstNameInput.value.replace(/\s/g, '');
+        var lastName = lastNameInput.value.replace(/\s/g, '');
+        var addr1 = addr1Input.value.trim();
+        var addr2 = addr2Input.value.trim();
+        var city = cityInput.value.trim();
+        var state = stateInput.value.replace(/\s/g, '');
+        var zip = zipInput.value.replace(/\s/g, '');
+        var ccNum = ccNumInput.value.replace(/\s/g, '');
+        var cvc = cvcInput.value.replace(/\s/g, '');
+        var expMonth = expMonthInput.value.replace(/\s/g, '');
+        var expYear = expYearInput.value.replace(/\s/g, '');
+
+        if (expMonth.length == 1) expMonth = "0" + expMonth;
+
+        // Return trimmed strings
+        firstNameInput.value = firstName;
+        lastNameInput.value = lastName;
+        addr1Input.value = addr1;
+        addr2Input.value = addr2;
+        cityInput.value = city;
+        stateInput.value = state.toUpperCase();
+        zipInput.value = zip;
+        ccNumInput.value = ccNum;
+        cvcInput.value = cvc;
+        expMonthInput.value = expMonth;
+        expYearInput.value = expYear;
+
+        return true;
+    }
+
+    function changeInputboxBackgroundColor(inputBoxes) {
+        for (var i = 0; i < inputBoxes.length; i++) {
+            if (inputBoxes[i].value != "") {
+                inputBoxes[i].style["background-color"] = 'rgb(232, 240, 254)';
+            } else {
+                inputBoxes[i].style["background-color"] = 'white';
+            }
+        }
+    }
+
+    window.onload = function () {
+        var stateError = document.getElementById("State").nextElementSibling;
+        if (stateError.innerHTML.length > 0) stateError.textContent = "State must be two letters.";
+
+        var inputBoxes = document.getElementsByClassName("form-control");
+        changeInputboxBackgroundColor(inputBoxes);
+
+        for (var i = 0; i < inputBoxes.length; i++) {
+            inputBoxes[i].addEventListener('keyup', function () {
+                changeInputboxBackgroundColor(inputBoxes);
+            });
+        }
+    }
+
+</script>

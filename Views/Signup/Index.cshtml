@@ -1,0 +1,101 @@
+﻿@model Ecommerce.Models.Signup
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    @using (Html.BeginForm("Index", "Signup",
+        new { ReturnUrl = Request.QueryString["ReturnUrl"] },
+        FormMethod.Post,
+        new { @class = "form-signup" }))
+    {
+        if (IsPost)
+        {
+        }
+
+        <h2 class="form-signup-heading">Sign Up Form</h2>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.FirstName, "First Name", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.LastName, "Last Name", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.LastName)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                @Html.LabelFor(m => m.Address1, "Address", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", placeholder = "Address", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.Address1)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                @Html.LabelFor(m => m.Address2, "Address 2", new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Address2, new { @class = "form-control", placeholder = "Apartment,  studio, or floor", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.Address2)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.City, "City", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "City/Town", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.City)
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(m => m.State, "State", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "State", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.State)
+            </div>
+            <div class="form-group col-md-2">
+                @Html.LabelFor(m => m.ZIPCode, "ZIP", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.ZIPCode, new { @class = "form-control", placeholder = "ZIP", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.ZIPCode)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.Email, "Email address", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email address", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.ConfirmEmail, "Confirm email address", new { @class = "control-label required" })
+                @Html.TextBoxFor(m => m.ConfirmEmail, new { @class = "form-control", placeholder = "Confirm email address", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.ConfirmEmail)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.Password, "Password", new { @class = "control-label required" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.ConfirmPassword, "Password", new { @class = "control-label required" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm password", autofocus = "" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-1"></div>
+            <div class="form-group alert alert-warning col-md-10">
+                <p>Passwords must meet all of the following criteria:</p>
+                <ul>
+                    <li>Minumum of 8 characters long</li>
+                    <li>One (1) uppercase letter</li>
+                    <li>One (1) lowercase letter</li>
+                    <li>One (1) number</li>
+                    <li>One (1) special character ($&+,:;=?@@#|'<>.^*()%!-)</li>
+                </ul>
+            </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+    }
+    <br />
+</div>

@@ -1,0 +1,45 @@
+﻿@model Ecommerce.Models.Login
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <form action="@Request.Url.PathAndQuery" method="post" class="form-signin">
+        @using (Html.BeginForm("Index", "Login",
+            new { ReturnUrl = Request.QueryString["ReturnUrl"] },
+            FormMethod.Post,
+            new { @class = "form-signin" }))
+        {
+            if (IsPost)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        <li>Invalid username or password credentials.</li>
+                    </ul>
+                    @Html.ValidationSummary()
+                </div>
+            }
+
+            <h2 class="form-signin-heading">Please sign in</h2>
+            @Html.LabelFor(m => m.Username, "Email address", new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Email address", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.Username)
+            <br />
+            @Html.LabelFor(m => m.Password, "Password", new { @class = "control-label" })
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+            @Html.ValidationMessageFor(m => m.Password)
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        }
+    </form>
+    <br />
+    <div class="form-signin text-center">
+        <h2 class="form-signin-heading">No account?</h2>
+        <a href="@Url.Action("Index", "Signup")" class="btn btn-info btn-lg btn-block" type="submit">Sign up now</a>
+    </div>
+</div>

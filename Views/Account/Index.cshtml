@@ -1,0 +1,34 @@
+﻿@model Ecommerce.Models.AccountViewModel
+@{
+    ViewBag.Title = "My Account";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a href="@Url.Action("UpdateLogin", "Account")">Update Login Information</a>
+<br />
+<a href="@Url.Action("UpdateShipping", "Account")">Update Shipping Information</a>
+<br />
+<a href="@Url.Action("Purchases", "Account")">View Previous Purchases</a>
+<br />
+<br />
+<p>
+    <b>Name: </b>
+    <br />
+    @Model.FirstName @Model.LastName
+    <br />
+    <br />
+    <b>Email: </b>
+    <br />
+    @Model.EmailAddress
+    <br />
+    <br />
+    <b>Address:</b>
+    <br />
+    @Model.Address1<br />
+    @if (!string.IsNullOrWhiteSpace(Model.Address2))
+    {
+        @Model.Address2<br />
+    }
+    @Model.City, @Model.State @Model.ZIPCode
+</p>

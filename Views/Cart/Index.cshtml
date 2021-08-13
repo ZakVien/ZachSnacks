@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Ecommerce.Models.CartViewModel>
+@{
+    ViewBag.Title = "Your Cart";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@if (Model != null && Model.Count() > 0)
+{
+<table class="table-striped">
+    <thead>
+        <tr>
+            <th class="text-center" scope="col" style="width:20%">Product</th>
+            <th class="text-left" scope="col" style="width:40%">Name</th>
+            <th class="text-center" scope="col" style="width:20%">Quantity</th>
+            <th class="text-right" scope="col" style="width:20%">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{var runningTotal = 0.0m;}
+        @foreach (var item in Model)
+        {
+            runningTotal += (item.price * item.quantity);
+            <tr>
+                <td class="text-center" style="max-width:20%;width:200px;"><a href="@item.productURL"><img src="@item.imagePath" style="padding:1em;width:90%;" /></a></td>
+                <td class="text-left" style="max-width: 20%;width:200px;"><a href="@item.productURL">@item.name</a></td>
+                <td class="text-center" style="max-width:20%;width:200px;font-size:15px;">
+                    <a href="@Url.Action("HandleSessionCartItemAmount", "Cart", new { prodID = item.productId, click = "Decrease" })"><i class="fa fa-minus-circle@(item.quantity <= 1 ? " removeItem" : "")"></i></a>
+                    @item.quantity
+                    <a href="@Url.Action("HandleSessionCartItemAmount", "Cart", new { prodID = item.productId, click ="Increase"})"><i class="fa fa-plus-circle"></i></a>
+                </td>
+                <td class="text-right" style="max-width:20%;width:200px;">@String.Format("{0:C}", (item.price * item.quantity))</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4" class="text-right" style="width:100%;background-color:white;">
+                <b>Total:</b> @String.Format("{0:C}", runningTotal)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right" style="width:100%;background-color:white;">
+                @{var tax = (Decimal)runningTotal * 0.055m; }
+                <b>Tax:</b> @String.Format("{0:C2}", tax)
+            </td>
+        </tr>
+        <tr>
+            @{ var shipping = 7.99m;}
+            <td colspan="4" class="text-right" style="width:100%;background-color:white;">
+                <b>Shipping:</b> @String.Format("{0:C}", shipping)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right" style="width:100%;background-color:white;padding:1em 0;">
+                <b>Subtotal: @String.Format("{0:C}", (runningTotal + tax + shipping))</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right" style="width:100%;background-color:white">
+                <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Index", "Checkout")'">Check out</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+    
+    <script>
+
+        function confirmDelete() {
+            var response = confirm("Are you sure you want to remove this item?");
+            if (response != true) {
+                event.preventDefault();
+            }
+            return response;
+        }
+
+        var removeableItems = document.getElementsByClassName("removeItem");
+        for (var i = 0; i < removeableItems.length; i++) {
+            removeableItems[i].addEventListener('click', confirmDelete, false);
+        }
+
+    </script>
+}
+else
+{
+    <h3>Your cart is empty. Shop our @Html.ActionLink("products", "Index", "Product") to fill your cart.</h3>
+}

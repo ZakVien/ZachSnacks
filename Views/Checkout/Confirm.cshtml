@@ -1,0 +1,122 @@
+﻿@model Ecommerce.Models.ProcessCheckoutViewModel
+@{
+    ViewBag.Title = "Checkout - Confirm Order";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Confirm Order</h2>
+    </div>
+    <div class="row">
+        <h3>Please verify the following information</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4><b>Shipping Information</b></h4>
+            <p><b>Name:</b> @Model.ShippingAndBilling.ShippingFirstName @Model.ShippingAndBilling.ShippingLastName</p>
+            <p>
+                <b>Address:</b> @Model.ShippingAndBilling.ShippingAddress1
+                @{if (!string.IsNullOrEmpty(Model.ShippingAndBilling.ShippingAddress2))
+                    {
+                        @Model.ShippingAndBilling.ShippingAddress2
+                    }
+                }
+                @Model.ShippingAndBilling.ShippingCity, @Model.ShippingAndBilling.ShippingState @Model.ShippingAndBilling.ShippingZIPCode
+            </p>
+            <p><b>Email:</b> @Model.ShippingAndBilling.CustomerEmail</p>
+            <br />
+            <br />
+            <h4><b>Billing Information</b></h4>
+            <p><b>Name:</b> @Model.ShippingAndBilling.BillingFirstName @Model.ShippingAndBilling.BillingLastName</p>
+            <p>
+                <b>Address:</b> @Model.ShippingAndBilling.BillingAddress1
+                @{if (!string.IsNullOrEmpty(Model.ShippingAndBilling.BillingAddress2))
+                    {
+                        @Model.ShippingAndBilling.BillingAddress2
+                    }
+                }
+                @Model.ShippingAndBilling.BillingCity, @Model.ShippingAndBilling.BillingState @Model.ShippingAndBilling.BillingZIPCode
+            </p>
+            <p><b>Credit Card:</b> @ViewBag.CCN</p>
+            <p><b>Expiration:</b> @Model.ShippingAndBilling.BillingExpMonth/@Model.ShippingAndBilling.BillingExpYear</p>
+        </div>
+        <div class="col-md-8">
+            <table class="table-striped text-center">
+                <thead>
+                    <tr>
+                        <th class="text-center" scope="col" style="max-width:20%;width:200px;">Product</th>
+                        <th class="text-left" scope="col" style="max-width:20%;width:200px;">Name</th>
+                        <th class="text-center" scope="col" style="max-width:20%;width:200px;">Quantity</th>
+                        <th class="text-right" scope="col" style="max-width: 20%;width:200px;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{var runningTotal = 0.0m;}
+                    @foreach (var item in Model.Cart)
+                    {
+                        runningTotal += (item.price * item.quantity);
+                        <tr>
+                            <td class="text-center" style="max-width:20%;width:200px;"><a href="@item.productURL"><img src="@item.imagePath" style="padding:1em;width:90%;" /></a></td>
+                            <td class="text-left" style="max-width: 20%;width:200px;"><a href="@item.productURL">@item.name</a></td>
+                            <td class="text-center" style="max-width:20%;width:200px;">@item.quantity</td>
+                            <td class="text-right" style="max-width:20%;width:200px;">@String.Format("{0:C}", (item.price * item.quantity))</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="4" class="text-right" style="width:100%;background-color:white;">
+                            <b>Total:</b> @String.Format("{0:C}", runningTotal)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-right" style="width:100%;background-color:white;">
+                            @{var tax = (Decimal)runningTotal * 0.055m; }
+                            <b>Tax:</b> @String.Format("{0:C2}", tax)
+                        </td>
+                    </tr>
+                    <tr>
+                        @{ var shipping = 7.99m;}
+                        <td colspan="4" class="text-right" style="width:100%;background-color:white;">
+                            <b>Shipping:</b> @String.Format("{0:C}", shipping)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-right" style="width:100%;background-color:white;padding:1em 0;">
+                            <b>Subtotal: @String.Format("{0:C}", (runningTotal + tax + shipping))</b>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            @using (Html.BeginForm("ProcessOrder", "Checkout", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingFirstName);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingLastName);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingAddress1);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingAddress2);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingCity);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingState);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingZIPCode);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingCreditCard);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingCVC);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingExpMonth);
+                @Html.HiddenFor(m => m.ShippingAndBilling.BillingExpYear);
+                @Html.HiddenFor(m => m.ShippingAndBilling.UserId);
+                @Html.HiddenFor(m => m.ShippingAndBilling.CustomerId);
+                @Html.HiddenFor(m => m.ShippingAndBilling.CartId);
+
+                @Html.HiddenFor(m => m.ShippingAndBilling.ShippingFirstName);
+                @Html.HiddenFor(m => m.ShippingAndBilling.ShippingLastName);
+                @Html.HiddenFor(m => m.ShippingAndBilling.ShippingAddress1);
+                @Html.HiddenFor(m => m.ShippingAndBilling.ShippingAddress2);
+                @Html.HiddenFor(m => m.ShippingAndBilling.ShippingCity);
+                @Html.HiddenFor(m => m.ShippingAndBilling.ShippingState);
+                @Html.HiddenFor(m => m.ShippingAndBilling.ShippingZIPCode);
+
+                <div class="text-right">
+                    <input class="btn btn-primary mx-right" type="submit" value="Place Order" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

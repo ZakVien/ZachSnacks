@@ -1,0 +1,92 @@
+﻿@model Ecommerce.Models.UpdateLogin
+@{
+    ViewBag.Title = "Update Login Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    @using (Html.BeginForm("UpdateLogin", "Account",
+        new { ReturnUrl = Request.QueryString["ReturnUrl"] },
+        FormMethod.Post,
+        new { @class = "form-signup" }))
+    {
+        if (IsPost)
+        {
+        }
+
+        <h2 class="form-signup-heading">Update Login Information</h2>
+        if (ViewBag.Message != null)
+        {
+            <div class="form-row">
+                <div class="form-group alert alert-danger">
+                    <p><b>@ViewBag.Message</b></p>
+                </div>
+            </div>
+        }
+        <div class="form-row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CurrentEmailAddress, "Current Email Address", new { @class = "control-label required" })
+                    @Html.TextBoxFor(m => m.CurrentEmailAddress, new { @class = "form-control", @readonly = "readonly", placeholder = "Current email address" })
+                    @Html.ValidationMessageFor(m => m.CurrentEmailAddress)
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CurrentPassword, "Current Password", new { @class = "control-label required" })
+                    @Html.PasswordFor(m => m.CurrentPassword, new { @class = "form-control", placeholder = "Current password", autofocus = "autofocus" })
+                    @Html.ValidationMessageFor(m => m.CurrentPassword)
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <br />
+        </div>
+        <div class="form-row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NewEmailAddress, "New Email address", new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.NewEmailAddress, new { @class = "form-control", placeholder = "New email address", autofocus = "" })
+                    @Html.ValidationMessageFor(m => m.NewEmailAddress)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmNewEmailAddress, "Confirm New Email Address", new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.ConfirmNewEmailAddress, new { @class = "form-control", placeholder = "Confirm new email address", autofocus = "" })
+                    @Html.ValidationMessageFor(m => m.ConfirmNewEmailAddress)
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NewPassword, "New Password", new { @class = "control-label" })
+                    @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control", placeholder = "New password", autofocus = "" })
+                    @Html.ValidationMessageFor(m => m.NewPassword)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmNewPassword, "Confirm New Password", new { @class = "control-label" })
+                    @Html.PasswordFor(m => m.ConfirmNewPassword, new { @class = "form-control", placeholder = "Confirm new password", autofocus = "" })
+                    @Html.ValidationMessageFor(m => m.ConfirmNewPassword)
+                    @Html.HiddenFor(m => m.UserId)
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-10">
+                <div class="form-group alert alert-warning">
+                    <p><b>Passwords must meet all of the following criteria:</b></p>
+                    <ul>
+                        <li>Minumum of 8 characters long</li>
+                        <li>One (1) uppercase letter</li>
+                        <li>One (1) lowercase letter</li>
+                        <li>One (1) number</li>
+                        <li>One (1) special character ($&+,:;=?@@#|'<>.^*()%!-)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Update</button>
+        <button class="btn btn-lg btn-dark btn-block" type="button" onclick="location.href='@Url.Action("Index", "Account")'">Cancel</button>
+    }
+    <br />
+</div>

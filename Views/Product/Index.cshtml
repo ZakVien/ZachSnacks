@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Ecommerce.Data.Entities.Product>
+@{
+    ViewBag.Title = "Shop Products";
+    var cartWasUpdated = false;
+    if (Session["cartWasUpdated"].ToString() != (""))
+    {
+        cartWasUpdated = true;
+        Session["cartWasUpdated"] = "";
+    }
+}
+
+<h2 class="h2">Our Products</h2>
+
+<a href="@Url.Action("Index", "Product")" class="btn btn-primary btn-lg filter-btn">
+    All Items
+</a>
+<a href="@Url.Action("Clearance", "Product")" class="btn btn-primary btn-lg filter-btn">
+    Clearance Items
+</a>
+
+@if (Model != null && Model.Count() != 0)
+{
+    for (int i = 0; i < Model.Count(); i += 4)
+    {
+
+        <div class="row product-row">
+            @foreach (var item in Model.Skip(i).Take(4))
+            {
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="@item.ProductURL">
+                                <img src="@item.ImagePath" />
+                            </a>
+                            @if (item.PercentOff != 0)
+                            {
+                                <span class="product-new-label">Sale</span>
+                                <span class="product-discount-label">@item.PercentOff%</span>
+                            }
+                        </div>
+                        <ul class="rating">
+                            @for (int j = 1; j <= item.StarRating; j++)
+                            {
+                                <li class="fa fa-star"></li>
+                            }
+                            @for (int j = item.StarRating; j < 5; j++)
+                            {
+                                <li class="fa fa-star disable"></li>
+                            }
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title"><a href="@item.ProductURL">@item.Name</a></h3>
+                            <div class="price">
+                                $@item.CurrentPrice.ToString("0.00")
+                                @if (item.PercentOff != 0)
+                                {
+                                    <span>$@item.FullPrice.ToString("0.00")</span>
+                                }
+                            </div>
+                            <a class="add-to-cart" href='@Url.Action("AddToSessionCart", "Cart", new { prodID = item.ProductId }, null)'>+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+    }
+    if (cartWasUpdated)
+    {
+        <script>
+        setTimeout(()=>
+        alert('Item added to cart!'), 100);
+        </script>
+    }
+}
+else
+{
+    <p>No clearance products found.</p>
+}

@@ -1,0 +1,56 @@
+﻿@model Ecommerce.Models.Login
+@{
+    ViewBag.Title = "Checkout Login";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-4">
+            <div class="card col-md-5">
+                <div class="card-body">
+                    <h4 class="card-subtitle mb-2 text-muted text-center">Log in to begin your checkout</h4>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("CheckoutLogin", "Login",
+                        new { ReturnUrl = Request.QueryString["ReturnUrl"] },
+                        FormMethod.Post,
+                        new { @class = "form-signin" }))
+                    {
+                        if (IsPost)
+                        {
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <li>Invalid username or password credentials.</li>
+                                </ul>
+                                @Html.ValidationSummary()
+                            </div>
+                        }
+
+                        @Html.LabelFor(m => m.Username, "Email address", new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Email address", autofocus = "" })
+                        @Html.ValidationMessageFor(m => m.Username)
+                        @Html.LabelFor(m => m.Password, "Password", new { @class = "control-label" })
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+                        @Html.ValidationMessageFor(m => m.Password)
+                        <br />
+                        <div class="text-center">
+                            <button class="btn btn-primary" type="submit">Sign in</button>
+                            <button class="btn btn-dark" type="button" onclick="location.href='@Url.Action("Index", "Cart")'">Cancel</button>
+                        </div>
+                    }
+                </div>
+                <br />
+                <div class="card-body text-center">
+                    <h4 class="card-title">Don't have an account?</h4>
+                    <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Signup")'">Create an Account</button>
+                    <br />
+                    <br />
+                    <p>Prefer to check out as a guest? <a href="@Url.Action("ShippingInfo", "Checkout")">Continue</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

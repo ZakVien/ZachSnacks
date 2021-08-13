@@ -1,0 +1,123 @@
+﻿@model Ecommerce.Models.UpdateShipping
+@{
+    ViewBag.Title = "Update Shipping Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    @using (Html.BeginForm("UpdateShipping", "Account",
+    new { ReturnUrl = Request.QueryString["ReturnUrl"] },
+    FormMethod.Post,
+    new { @class = "form-signup", onsubmit = "return validate()" }))
+    {
+    if (IsPost)
+    {
+    }
+
+    <h2 class="form-signup-heading">Update Account Information</h2>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.FirstName, "First Name", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.LastName, "Last Name", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            @Html.LabelFor(m => m.Address1, "Address", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", placeholder = "Address", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.Address1)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            @Html.LabelFor(m => m.Address2, "Address 2", new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Address2, new { @class = "form-control", placeholder = "Apartment,  studio, or floor", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.Address2)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.City, "City", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "City/Town", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.City)
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(m => m.State, "State", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "State", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.State)
+        </div>
+        <div class="form-group col-md-2">
+            @Html.LabelFor(m => m.ZIPCode, "ZIP", new { @class = "control-label required" })
+            @Html.TextBoxFor(m => m.ZIPCode, new { @class = "form-control", placeholder = "ZIP", autofocus = "" })
+            @Html.ValidationMessageFor(m => m.ZIPCode)
+        </div>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+    <button class="btn btn-lg btn-dark btn-block" type="button" onclick="location.href='@Url.Action("Index", "Account")'">Cancel</button>
+    }
+    <br />
+</div>
+
+<script>
+
+    function validate() {
+
+        var firstNameInput = document.getElementById("FirstName");
+        var lastNameInput = document.getElementById("LastName");
+        var addr1Input = document.getElementById("Address1");
+        var addr2Input = document.getElementById("Address2");
+        var cityInput = document.getElementById("City");
+        var stateInput = document.getElementById("State");
+        var zipInput = document.getElementById("ZIPCode");
+
+        var firstName = firstNameInput.value.replace(/\s/g, '');
+        var lastName = lastNameInput.value.replace(/\s/g, '');
+        var addr1 = addr1Input.value.trim();
+        var addr2 = addr2Input.value.trim();
+        var city = cityInput.value.trim();
+        var state = stateInput.value.replace(/\s/g, '');
+        var zip = zipInput.value.replace(/\s/g, '');
+
+        // Return trimmed strings
+        firstNameInput.value = firstName;
+        lastNameInput.value = lastName;
+        addr1Input.value = addr1;
+        addr2Input.value = addr2;
+        cityInput.value = city;
+        stateInput.value = state.toUpperCase();
+        zipInput.value = zip;
+
+        return true;
+    }
+
+    window.onload = function () {
+        var stateError = document.getElementById("State").nextElementSibling;
+        if (stateError.innerHTML.length > 0) stateError.textContent = "State must be two letters.";
+
+        var inputBoxes = document.getElementsByClassName("form-control");
+        changeInputboxBackgroundColor(inputBoxes);
+
+        for (var i = 0; i < inputBoxes.length; i++) {
+            inputBoxes[i].addEventListener('keyup', function () {
+                changeInputboxBackgroundColor(inputBoxes);
+            });
+        }
+
+        function changeInputboxBackgroundColor(box) {
+            for (var i = 0; i < box.length; i++) {
+                if (box[i].value != "") {
+                    box[i].style["background-color"] = 'rgb(232, 240, 254)';
+                } else {
+                    box[i].style["background-color"] = 'white';
+                }
+            }
+        }
+    }
+
+</script>
